@@ -1,7 +1,7 @@
 var express = require("express");
 
 var router = express.Router();
-var burger = require("../models/burger");
+var db = require("../models");
 
 // get route -> index
 router.get("/", function(req, res) {
@@ -9,12 +9,10 @@ router.get("/", function(req, res) {
 });
 
 router.get("/burgers", function(req, res) {
-  // express callback response by calling burger.selectAllBurger
-  burger.all(function(data) {
-    // Wrapping the array of returned burgers in a object so it can be referenced inside our handlebars
-    var hbsObject = { burgers: data };
-    res.render("index", hbsObject);
-  });
+  db.burger.findAll({}).then(function(results) {
+    console.log(results)
+    res.json(results)
+  })
 });
 
 // post route -> back to index

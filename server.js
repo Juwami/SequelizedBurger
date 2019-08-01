@@ -17,6 +17,10 @@ app.set("view engine", "handlebars");
 
 var routes = require("./controllers/burgers_controller");
 
+let db = require("./models")
+
+db.sequelize.sync();
+
 app.use(routes);
 
 // listen on port 3000
