@@ -1,26 +1,26 @@
-let express = require("express");
+var express = require("express");
 
-let PORT = process.env.PORT || 8080;
-
-let app = express();
-
+var app = express();
+// Serve static content for the app from the "public" directory in the application directory.
 app.use(express.static("public"));
 
-app.use(express.urlencoded({extended: true}));
+// Parse request body as JSON
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-let exphbs = require("express-handlebars");
+var exphbs = require("express-handlebars");
 
-app.engine("handlebars", exphbs({defaultLayout: "main"}));
+app.engine("handlebars", exphbs({
+  defaultLayout: "main"
+}));
 app.set("view engine", "handlebars");
 
-let routes = require("./controllers/burgers_controller");
-let db = require("./models")
-
-db.sequelize.sync();
+var routes = require("./controllers/burgers_controller");
 
 app.use(routes);
 
+// listen on port 3000
+var PORT = process.env.PORT || 3000;
 app.listen(PORT, function() {
-    console.log("Server listening via: http://localhost:" + PORT);
-})
+  console.log("App listening on PORT " + PORT);
+});
