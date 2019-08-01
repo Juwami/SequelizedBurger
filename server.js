@@ -6,18 +6,26 @@ let app = express();
 
 app.use(express.static("public"));
 
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({
+    extended: true
+}));
 app.use(express.json());
 
 let exphbs = require("express-handlebars");
 
-app.engine("handlebars", exphbs({defaultLayout: "main"}));
+app.engine("handlebars", exphbs({
+    defaultLayout: "main"
+}));
 app.set("view engine", "handlebars");
 
 let routes = require("./controllers/burgers_controller");
 
+let db = require("./models")
+
 app.use(routes);
 
-app.listen(PORT, function() {
-    console.log("Server listening via: http://localhost:" + PORT);
+db.sequelize.sync().then(function () {
+    app.listen(PORT, function () {
+        console.log("Server listening via: http://localhost:" + PORT);
+    })
 })
